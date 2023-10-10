@@ -1,0 +1,9 @@
+<li>
+  <p>
+    <small><%= comment.user.name %></small>
+    <% if(locals.user && locals.user.id == comment.user.id){ %>
+    <a href="/comments/delete-comment/<%= comment._id %>">X</a>
+    <% } %>
+  </p>
+  <p><%= comment.content %></p>
+</li>
