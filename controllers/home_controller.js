@@ -1,4 +1,5 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 
 module.exports.home = async function (req, res) {
   try {
@@ -9,11 +10,12 @@ module.exports.home = async function (req, res) {
         populate: {
           path: "user",
         },
-      })
-      .exec();
+      });
+    const users = await User.find({});
     return res.render("home", {
       title: "CODIAL | HOME",
       posts: posts,
+      all_users: users ? users : [],
     });
   } catch (err) {
     console.log("Cannot find the posts", err);

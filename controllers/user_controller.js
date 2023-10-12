@@ -1,12 +1,34 @@
 const User = require("../models/user");
 
-module.exports.profile = function (req, res) {
-  res.render("user_profile", {
-    title: "User Profile",
-  });
+//module.exports.actionName = function(req,res){};
+
+module.exports.profile = async function (req, res) {
+  try {
+    const user = await User.findById(req.params.id).exec();
+    if (user) {
+      res.render("user_profile", {
+        title: "User Profile",
+        profile_user: user,
+      });
+    }
+  } catch (err) {
+    console.log("error finding the user to display profile: ", err);
+  }
 };
 
-//module.exports.actionName = function(req,res){};
+module.exports.updateUser = async function (req, res) {
+  if (req.user.id == req.params.id) {
+    try {
+      await User.findByIdAndUpdate(req.params.id, req.body);
+      return res.redirect("/");
+    } catch (err) {
+      console.log("Error finding an updating the user: ", err);
+      return res.status(404).send("internal Server Error");
+    }
+  } else {
+    return res.status(401).send("Unauthorised");
+  }
+};
 
 module.exports.register = function (req, res) {
   res.render("register", {
