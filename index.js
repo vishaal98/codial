@@ -1,6 +1,6 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
-const PORT = 5000;
+const PORT = 3000;
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const db = require("./config/mongoose");
@@ -10,6 +10,8 @@ const passport = require("passport");
 const passportLocal = require("./config/passport-local-strategy");
 const MongoStore = require("connect-mongo");
 const sassMiddleware = require("node-sass-middleware");
+const flash = require("connect-flash");
+const customMiddleware = require("./config/middleware");
 
 //setup up the SASS middleware
 app.use(
@@ -64,6 +66,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+app.use(flash());
+app.use(customMiddleware.setFlash);
 
 //use express router
 app.use("/", require("./routes/index"));
