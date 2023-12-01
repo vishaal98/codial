@@ -31,6 +31,10 @@ app.use(express.urlencoded());
 app.use(cookieParser());
 
 app.use(express.static("./assets"));
+
+//let the server know to use the uploads folder when url hits a path starting with /uploads
+app.use("/uploads", express.static(__dirname + "/uploads"));
+
 app.use(expressLayouts);
 //extract styles and scripts from sub pages into the layout
 app.set("layout extractStyles", true);

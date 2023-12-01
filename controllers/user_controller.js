@@ -1,5 +1,6 @@
 const User = require("../models/user");
-
+const fs = require("fs");
+const path = require("path");
 //module.exports.actionName = function(req,res){};
 
 module.exports.profile = async function (req, res) {
@@ -19,13 +20,39 @@ module.exports.profile = async function (req, res) {
 module.exports.updateUser = async function (req, res) {
   if (req.user.id == req.params.id) {
     try {
-      await User.findByIdAndUpdate(req.params.id, req.body);
-      return res.redirect("/");
+      let user = await User.findById(req.params.id);
+      User.uploadedAvatar(req, res, function (err) {
+        if (err) {
+          console.log("********MULTER ERROR: ", err);
+          req.flash("error", err.code + ": 2MB");
+        }
+        user.name = req.body.name;
+        user.email = req.body.email;
+
+        if (req.file) {
+          if (user.avatar) {
+            let filePath = path.join(__dirname, "..", user.avatar);
+            fs.access(filePath, fs.constants.F_OK, (err) => {
+              if (err) {
+                console.error(`The file '${filePath}' does not exist.`);
+              } else {
+                console.log(`The file '${filePath}' exists.`);
+                fs.unlinkSync(filePath);
+              }
+            });
+          }
+          user.avatar = User.avatarPath + "/" + req.file.filename;
+        }
+        user.save();
+        return res.redirect("back");
+      });
     } catch (err) {
+      req.flash("error", err);
       console.log("Error finding an updating the user: ", err);
       return res.status(404).send("internal Server Error");
     }
   } else {
+    req.flash("error", "Unauthorized");
     return res.status(401).send("Unauthorised");
   }
 };
