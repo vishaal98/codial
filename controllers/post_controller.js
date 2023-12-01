@@ -1,15 +1,31 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
+const User = require("../models/user");
 module.exports.posts = function (req, res) {
   res.send("<h1>POSTS</h1>");
 };
 
-module.exports.createPost = function (req, res) {
+module.exports.createPost = async function (req, res) {
   try {
-    Post.create({
+    let post = await Post.create({
       content: req.body.content,
       user: req.user._id,
     });
+
+    // let user = await User.findById(req.user._id);
+    let populatedPost = await Post.populate(post, {
+      path: "user",
+      select: "name",
+    });
+    if (req.xhr) {
+      return res.status(200).json({
+        data: {
+          post: populatedPost,
+          // user: user.name,
+          message: "Post Created",
+        },
+      });
+    }
     req.flash("success", "Post Published!");
   } catch (err) {
     console.log("Error creating the Post", err);
@@ -23,8 +39,18 @@ module.exports.detroyPost = async function (req, res) {
   if (postFound) {
     if (postFound.user.toString() == req.user.id) {
       try {
-        await Post.findByIdAndDelete(req.params.id);
+        let post = await Post.findByIdAndDelete(req.params.id);
         await Comment.deleteMany({ post: req.params.id });
+
+        if (req.xhr) {
+          return res.status(200).json({
+            data: {
+              post_id: post._id,
+            },
+            message: "Post deleted",
+          });
+        }
+
         req.flash("success", "Post Deleted");
       } catch (err) {
         console.log("Error:  ", err);
