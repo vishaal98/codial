@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your Recent Activity on CODIAL</title>
+    <style>
+      body,
+      h1,
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+      }
+      .container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 15px;
+      }
+      p {
+        color: #555;
+      }
+      .action-details {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .button {
+        display: inline-block;
+        padding: 8px 16px;
+        margin-top: 10px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #b3d3f5;
+        border-radius: 4px;
+      }
+      .button:hover {
+        background-color: #33567b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Recent Activity on CODIAL</h1>
+      <h3>Hi <%= post.user.name %>,</h3>
+      <br />
+      <br />
+      <div class="action-details">
+        <p>Your Post is published on CODIAL</p>
+        <br />
+        <h4>POST</h4>
+        <hr />
+        <p><strong>"<%= post.content %>"</strong></p>
+        <br />
+        <br />
+        <a href="http://localhost:3000/" class="button">Visit CODIAL</a>
+      </div>
+      <br />
+      <br />
+      <h3>Best Regards,<br />CODIAL</h3>
+    </div>
+  </body>
+</html>

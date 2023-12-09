@@ -22,7 +22,6 @@ passport.use(
       let user = await User.findOne({ email: profile.emails[0].value });
       if (user) {
         //if user is found sign in the user and set the user in req.user
-        console.log(profile);
         return done(null, user);
       } else {
         //if not found then create a new user in our database

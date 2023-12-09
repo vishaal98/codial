@@ -1,6 +1,8 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 const User = require("../models/user");
+const postMailer = require("../mailers/posts_mailer");
+
 module.exports.posts = function (req, res) {
   res.send("<h1>POSTS</h1>");
 };
@@ -15,8 +17,11 @@ module.exports.createPost = async function (req, res) {
     // let user = await User.findById(req.user._id);
     let populatedPost = await Post.populate(post, {
       path: "user",
-      select: "name",
+      select: "name email",
     });
+
+    postMailer.newPost(populatedPost);
+
     if (req.xhr) {
       return res.status(200).json({
         data: {

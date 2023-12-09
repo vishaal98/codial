@@ -50,7 +50,7 @@ app.set("views", "./views");
 //set up cookie session
 //MongoStore is used to store the session cookie in the DB
 const sessionStorage = MongoStore.create({
-  mongoUrl: "mongodb://127.0.0.1:27017/",
+  mongoUrl: process.env.MONGODB,
   dbName: "codial_db",
   collectionName: "session",
   autoRemove: "disabled",
