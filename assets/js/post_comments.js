@@ -25,6 +25,8 @@ class PostComments {
           $(`#post-comments-${postId}`).prepend(newComment);
           parentSelf.deleteComment($(" .delete-comment-button", newComment));
 
+          $(`#${postId}-comment-content`).val("");
+
           //to show the notification
           new Noty({
             theme: "relax",
@@ -45,17 +47,16 @@ class PostComments {
     // I've added a class 'delete-comment-button' to the delete comment link and also id to the comment's li
     return $(`<li id="comment-${comment._id}">
                         <p>
-                            
-                            <small>
-                                <a class="delete-comment-button" href="/comments/delete-comment/${comment._id}">X</a>
-                            </small>
-                            
-                            ${comment.content}
-                            <br>
                             <small>
                                 ${comment.user.name}
                             </small>
-                        </p>    
+                            <small>
+                            <a class="delete-comment-button" href="/comments/delete-comment/${comment._id}"><i class="fa-regular fa-trash-can" style="color: #000000;"></i></a>
+                            </small>
+                        </p> 
+                        <p>
+                        ${comment.content}
+                        </p>   
 
                 </li>`);
   }

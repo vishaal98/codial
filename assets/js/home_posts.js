@@ -16,9 +16,11 @@
           newPostForm[0].reset();
           deletePost($(" .delete-post-button", newPost));
 
+          //clear the input field
+          $("#postContent", newPostForm).val("");
+
           //call the create comment class
           new PostComments(data.data.post._id);
-
           //to show the notification
           new Noty({
             theme: "relax",
@@ -42,7 +44,8 @@
     <small> ${post.user.name} </small>
     <small
       ><a class="delete-post-button" href="/posts/delete-post/${post._id}"
-        >DELETE</a
+        ><i class="fa-regular fa-trash-can" style="color: #000000"></i
+      ></a
       ></small
     >
   </p>
@@ -56,6 +59,7 @@
       method="POST"
     >
       <input
+        id="${post._id}-comment-content"
         type="text"
         name="content"
         placeholder="Add a comment here..."
@@ -111,7 +115,7 @@
 
       // get the post's id by splitting the id attribute
       let postId = self.prop("id").split("-")[1];
-      //   new PostComments(postId);
+      new PostComments(postId);
     });
   };
 

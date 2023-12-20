@@ -7,6 +7,7 @@
     <%if(locals.user){%>
     <form action="/posts/create-post" id="new-post-form" method="POST">
       <textarea
+        id="postContent"
         name="content"
         cols="30"
         rows="3"
@@ -32,5 +33,5 @@
     <% } %>
   </section>
 </div>
-<script src="/js/home_posts.js"></script>
 <script src="/js/post_comments.js"></script>
+<script src="/js/home_posts.js"></script>
